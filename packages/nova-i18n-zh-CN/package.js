@@ -1,6 +1,6 @@
 Package.describe({
-  name: "nova:i18n-cn",
-  summary: "Telescope i18n package (en_US)",
+  name: "nova:i18n-zh-cn",
+  summary: "Telescope i18n package (zh-CN)",
   version: "0.27.0-nova",
   git: "https://github.com/TelescopeJS/telescope.git"
 });
@@ -14,6 +14,6 @@ Package.onUse(function (api) {
   ]);
 
   api.addFiles([
-    'lib/en_US.js'
+    'lib/zh-CN.js'
   ], ["client", "server"]);
 });
