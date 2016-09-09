@@ -90,6 +90,7 @@ function addTimeParameter (parameters, terms) {
     */
 
     if (Meteor.isClient) {
+      //TODO fix the serverTimezoneOffset crash on android
       clientTimezoneOffset = -1 * new Date().getTimezoneOffset();
       // console.log(clientTimezoneOffset + 'clientTimezoneOffset');
       try{
