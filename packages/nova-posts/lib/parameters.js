@@ -91,11 +91,11 @@ function addTimeParameter (parameters, terms) {
 
     if (Meteor.isClient) {
       clientTimezoneOffset = -1 * new Date().getTimezoneOffset();
-      console.log(clientTimezoneOffset + 'clientTimezoneOffset');
+      // console.log(clientTimezoneOffset + 'clientTimezoneOffset');
       try{
         serverTimezoneOffset = -1 * Injected.obj('serverTimezoneOffset').offset;
       }catch (e){
-        console.log(e);
+        // console.log(e);
         serverTimezoneOffset = 8;
       }
       timeDifference = clientTimezoneOffset - serverTimezoneOffset;
