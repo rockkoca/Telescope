@@ -60,7 +60,7 @@ Telescope.utils.camelCaseify = function(str) {
  * @param {Number} numWords - Number of words to trim sentence to.
  */
 Telescope.utils.trimWords = function(s, numWords) {
-  
+
   if (!s)
     return s;
 
@@ -159,11 +159,15 @@ Telescope.utils.getPostCommentUrl = function(postId, commentId) {
     commentId: commentId
   });
 };
-
+//TODO SLUG NOT WORKING FOR CHINESE
 Telescope.utils.slugify = function (s) {
   var slug = getSlug(s, {
     truncate: 60
   });
+  if(!slug || slug === undefined || (slug < 9999999)) {
+    slug = ('' + s).replace(/[|&;$%@"<>()+,]/g, "");
+  }
+  console.log('slug: ' + slug);
 
   // can't have posts with an "edit" slug
   if (slug === "edit") {
