@@ -41,3 +41,4 @@ nova:debug
 ############ Your Packages ############
 
 # my-custom-package
+meteorhacks:kadira

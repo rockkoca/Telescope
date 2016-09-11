@@ -165,7 +165,7 @@ Telescope.utils.slugify = function (s) {
     truncate: 60
   });
   if(!slug || slug === undefined || (slug < 9999999)) {
-    slug = ('' + s).replace(/[|&;$%@"<>()+,]/g, "");
+    slug = ('' + s).replace(/[|&;$%@"<>()+,\\/]/g, "");
   }
   console.log('slug: ' + slug);
 

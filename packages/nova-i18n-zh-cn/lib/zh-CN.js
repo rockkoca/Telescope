@@ -1,6 +1,6 @@
 import Telescope from 'meteor/nova:lib';
 
-Telescope.strings.en = {
+Telescope.strings.zh = {
   "forms.submit": "提交",
   "forms.cancel": "取消",
 
