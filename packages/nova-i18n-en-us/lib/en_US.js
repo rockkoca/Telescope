@@ -87,7 +87,7 @@ Telescope.strings.en = {
   "categories.edit": "编辑分类",
   "categories.new": "创建分类",
   "categories.delete": "删除分类",
-  "categories.name": "MINGCHENG",
+  "categories.name": "名称",
   "categories.description": "描述",
   "categories.order": "顺序",
   "categories.slug": "别名",
