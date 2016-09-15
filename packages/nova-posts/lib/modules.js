@@ -1,4 +1,5 @@
 import Posts from './collection.js';
+import PostsBody from './collection.js';
 
 import './schema.js';
 import './parameters.js';
@@ -12,3 +13,4 @@ import './methods.js';
 import './permissions.js';
 
 export default Posts;
+export default PostsBody;
