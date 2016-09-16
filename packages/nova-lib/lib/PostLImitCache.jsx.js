@@ -1,6 +1,7 @@
 /**
  * Created by k on 9/15/16.
  */
+import Telescope from 'meteor/nova:lib';
 SessionLocal = {
   set: function (key, val) {
     // var time = new Data().getTime();
@@ -37,13 +38,27 @@ SessionLocal = {
 
 LastListLimit = {
   __lastKey: null,
-  set(){
-
+  set(key, value){
+    SessionLocal.set(key, value);
   },
-  get(){
-
-
-    return Telescope.settings.get("postsPerPage", 10);
+  get(params){
+    let key = '';
+    let defaultLimit = Telescope.settings.get("postsPerPage", 10);
+    if (params.view) {
+      key += params.view
+    }
+    if (params.cat) {
+      key += '-' + params.cat
+    }
+    if (params.query) {
+      key += '-' + params.query
+    }
+    if(key === this.__lastKey && SessionLocal.get(key)) {
+      return SessionLocal.get(key)
+    }else if(key === this.__lastKey){
+      this.set(key, defaultLimit)
+    }
+    return defaultLimit;
   }
 };
 
