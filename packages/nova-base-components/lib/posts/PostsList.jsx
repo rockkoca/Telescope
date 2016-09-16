@@ -7,7 +7,11 @@ const PostsList = ({results, currentUser, hasMore, ready, count, totalCount, loa
     console.log(loadMore);
     console.log(count);
     console.log(count);
+    function loadMoreExtend() {
+        console.log(this.setState);
+    }
 
+    _.extend(loadMore, loadMoreExtend);
   if (!!results.length) {
     return (
       <div className="posts-list">
