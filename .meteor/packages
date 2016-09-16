@@ -44,3 +44,4 @@ nova:debug
 meteorhacks:kadira
 underscore
 meteorhacks:cluster
+session
