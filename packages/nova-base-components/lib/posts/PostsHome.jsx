@@ -13,7 +13,8 @@ class PostsHome extends Component {
 
     const params = {...this.getDefaultView(), ...this.props.location.query, listId: "posts.list.main"};
     const {selector, options} = Posts.parameters.get(params);
-
+    console.log(selector);
+    console.log(options);
     return (
       <ListContainer 
         collection={Posts} 
