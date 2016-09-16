@@ -28,7 +28,7 @@ class PostsHome extends Component {
         component={Telescope.components.PostsList}
         cacheSubscription={true}
         listId={params.listId}
-        {/*limit={Telescope.settings.get("postsPerPage", 10)}*/}
+        //{/*limit={Telescope.settings.get("postsPerPage", 10)}*/}
         limit={LastListLimit.get(params)}
       />
     )
