@@ -15,7 +15,7 @@ class PostsHome extends Component {
     const {selector, options} = Posts.parameters.get(params);
     console.log(options);
     const limit = Telescope.plus.LastListLimit.get(params);
-    options.limit = limit;
+    options.limit = 20;
     // console.log(selector);
     console.log(options);
     // console.log(params);
