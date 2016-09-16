@@ -7,5 +7,6 @@ import './collections.js';
 import './deep.js';
 import './deep_extend.js';
 import './intl-polyfill.js';
+import './plus.js';
 
 export default Telescope;
