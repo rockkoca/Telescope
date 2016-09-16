@@ -9,8 +9,8 @@ const PostsList = ({results, currentUser, hasMore, ready, count, totalCount, loa
     console.log(count);
     function loadMoreExtend() {
         console.log(this.setState);
+        console.log('this.setState%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
     }
-
     _.extend(loadMore, loadMoreExtend);
   if (!!results.length) {
     return (
