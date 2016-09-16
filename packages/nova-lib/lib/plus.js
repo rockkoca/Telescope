@@ -67,11 +67,14 @@ Telescope.plus.LastListLimit = {
         key += '-' + params.query
       }
     }
+    if (key && !this.__lastKey) {
+      this.__lastKey = key;
+    }
     // if no params,
     console.log(key + ": " + Telescope.plus.SessionLocal.get(key));
     if (key === this.__lastKey && Telescope.plus.SessionLocal.get(key)) {
       return Telescope.plus.SessionLocal.get(key)
-    } else if (key === this.__lastKey) {
+    } else if(key) {
       this.set(key, defaultLimit)
     }
     return defaultLimit;
