@@ -68,6 +68,7 @@ Telescope.plus.LastListLimit = {
       }
     }
     // if no params,
+    console.log(key + ": " + Telescope.plus.SessionLocal.get(key));
     if (key === this.__lastKey && Telescope.plus.SessionLocal.get(key)) {
       return Telescope.plus.SessionLocal.get(key)
     } else if (key === this.__lastKey) {
