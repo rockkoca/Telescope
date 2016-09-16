@@ -2,6 +2,10 @@
  * Created by k on 9/15/16.
  */
 import Telescope from './config.js';
+/**
+ * @summary The global namespace for Telescope utils.
+ * @namespace Telescope.utils
+ */
 Telescope.plus = {};
 Telescope.plus.SessionLocal = {
   set: function (key, val) {
