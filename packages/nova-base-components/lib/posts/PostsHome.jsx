@@ -1,4 +1,5 @@
-import { Telescope, LastListLimit} from 'meteor/nova:lib';
+import Telescope from 'meteor/nova:lib';
+import LastListLimit from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { ListContainer, DocumentContainer } from "meteor/utilities:react-list-container";
 import Posts from "meteor/nova:posts";
