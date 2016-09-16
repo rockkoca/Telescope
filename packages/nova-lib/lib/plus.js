@@ -43,24 +43,34 @@ Telescope.plus.SessionLocal = {
 
 Telescope.plus.LastListLimit = {
   __lastKey: null,
-  set(key, value){
-    Telescope.plus.SessionLocal.set(key, value);
+  set(key = false, value){
+    if (key) {
+      return;
+    }
+    // if no key is given, update the last key
+    if (this.__lastKey) {
+      Telescope.plus.SessionLocal.set(this.__lastKey, value);
+    }
+
   },
   get(params){
     let key = '';
     let defaultLimit = Telescope.settings.get("postsPerPage", 10);
-    if (params.view) {
-      key += params.view
+    if (params) {
+      if (params.view) {
+        key += params.view
+      }
+      if (params.cat) {
+        key += '-' + params.cat
+      }
+      if (params.query) {
+        key += '-' + params.query
+      }
     }
-    if (params.cat) {
-      key += '-' + params.cat
-    }
-    if (params.query) {
-      key += '-' + params.query
-    }
-    if(key === this.__lastKey && Telescope.plus.SessionLocal.get(key)) {
+    // if no params,
+    if (key === this.__lastKey && Telescope.plus.SessionLocal.get(key)) {
       return Telescope.plus.SessionLocal.get(key)
-    }else if(key === this.__lastKey){
+    } else if (key === this.__lastKey) {
       this.set(key, defaultLimit)
     }
     return defaultLimit;

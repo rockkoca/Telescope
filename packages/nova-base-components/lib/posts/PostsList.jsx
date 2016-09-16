@@ -3,15 +3,9 @@ import React from 'react';
 
 const PostsList = ({results, currentUser, hasMore, ready, count, totalCount, loadMore, showHeader = true}) => {
 
-    console.log('loadMore');
-    console.log(loadMore);
+    console.log('count');
     console.log(count);
-    console.log(count);
-    function loadMoreExtend() {
-        console.log(this.setState);
-        console.log('this.setState%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
-    }
-    _.extend(loadMore, loadMoreExtend);
+    Telescope.plus.LastListLimit.set(count);
   if (!!results.length) {
     return (
       <div className="posts-list">
