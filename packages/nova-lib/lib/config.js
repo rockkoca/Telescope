@@ -34,6 +34,7 @@ SimpleSchema.extendOptions({
 // ------------------------------------- Components -------------------------------- //
 
 Telescope.components = {};
+Telescope.plus = {};
 
 Telescope.registerComponent = (name, component) => {
   Telescope.components[name] = component;
