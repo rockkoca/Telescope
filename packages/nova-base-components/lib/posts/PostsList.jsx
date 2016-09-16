@@ -3,10 +3,8 @@ import React from 'react';
 
 const PostsList = ({results, currentUser, hasMore, ready, count, totalCount, loadMore, showHeader = true}) => {
 
-  console.log(results);
-  console.log(ready);
-  console.log(hasMore);
-  console.log(totalCount);
+    console.log('loadMore');
+    console.log(loadMore);
     console.log(count);
     console.log(count);
 
