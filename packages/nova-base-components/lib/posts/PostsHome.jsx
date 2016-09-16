@@ -1,5 +1,4 @@
 import Telescope from 'meteor/nova:lib';
-import LastListLimit from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { ListContainer, DocumentContainer } from "meteor/utilities:react-list-container";
 import Posts from "meteor/nova:posts";
@@ -30,7 +29,7 @@ class PostsHome extends Component {
         cacheSubscription={true}
         listId={params.listId}
         //{/*limit={Telescope.settings.get("postsPerPage", 10)}*/}
-        limit={LastListLimit.get(params)}
+        limit={Telescope.custom.LastListLimit.get(params)}
       />
     )
   }

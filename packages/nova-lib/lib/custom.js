@@ -2,7 +2,7 @@
  * Created by k on 9/15/16.
  */
 import Telescope from 'meteor/nova:lib';
-SessionLocal = {
+Telescope.custom.SessionLocal = {
   set: function (key, val) {
     // var time = new Data().getTime();
     // var value = {
@@ -36,10 +36,10 @@ SessionLocal = {
   }
 };
 
-LastListLimit = {
+Telescope.custom.LastListLimit = {
   __lastKey: null,
   set(key, value){
-    SessionLocal.set(key, value);
+    Telescope.custom.SessionLocal.set(key, value);
   },
   get(params){
     let key = '';
@@ -53,8 +53,8 @@ LastListLimit = {
     if (params.query) {
       key += '-' + params.query
     }
-    if(key === this.__lastKey && SessionLocal.get(key)) {
-      return SessionLocal.get(key)
+    if(key === this.__lastKey && Telescope.custom.SessionLocal.get(key)) {
+      return Telescope.custom.SessionLocal.get(key)
     }else if(key === this.__lastKey){
       this.set(key, defaultLimit)
     }
@@ -62,5 +62,3 @@ LastListLimit = {
   }
 };
 
-export default SessionLocal
-export default LastListLimit
