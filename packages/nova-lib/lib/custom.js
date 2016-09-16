@@ -1,8 +1,9 @@
 /**
  * Created by k on 9/15/16.
  */
-import Telescope from 'meteor/nova:lib';
-Telescope.custom.SessionLocal = {
+import Telescope from './config.js';
+Telescope.plus = {};
+Telescope.plus.SessionLocal = {
   set: function (key, val) {
     // var time = new Data().getTime();
     // var value = {
@@ -36,10 +37,10 @@ Telescope.custom.SessionLocal = {
   }
 };
 
-Telescope.custom.LastListLimit = {
+Telescope.plus.LastListLimit = {
   __lastKey: null,
   set(key, value){
-    Telescope.custom.SessionLocal.set(key, value);
+    Telescope.plus.SessionLocal.set(key, value);
   },
   get(params){
     let key = '';
@@ -53,8 +54,8 @@ Telescope.custom.LastListLimit = {
     if (params.query) {
       key += '-' + params.query
     }
-    if(key === this.__lastKey && Telescope.custom.SessionLocal.get(key)) {
-      return Telescope.custom.SessionLocal.get(key)
+    if(key === this.__lastKey && Telescope.plus.SessionLocal.get(key)) {
+      return Telescope.plus.SessionLocal.get(key)
     }else if(key === this.__lastKey){
       this.set(key, defaultLimit)
     }
