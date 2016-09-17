@@ -32,7 +32,7 @@ Posts.parameters.get = function (terms) {
 
   // iterate over postsParameters callbacks
   parameters = Telescope.callbacks.run("postsParameters", parameters, _.clone(terms));
-
+  //parameters.options.limit = 20; //test only //TODO DELETE THIS LATER
   // if sort options are not provided, default to "createdAt" sort
   if (_.isEmpty(parameters.options.sort)) {
     parameters.options.sort = {sticky: -1, createdAt: -1};

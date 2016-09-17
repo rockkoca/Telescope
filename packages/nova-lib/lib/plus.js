@@ -43,19 +43,35 @@ Telescope.plus.SessionLocal = {
 
 Telescope.plus.LastListLimit = {
   __lastKey: null,
-  set(key = false, value){
-    if (key) {
-      return;
+  __step: Telescope.settings.get("postsPerPage", 10),
+  __lastLimit: this.__step,
+  set(value){
+    console.log('Telescope.plus.LastListLimit.set()');
+    console.log(value, this.__lastKey);
+    // update the last limit only if the new value bigger than last limit
+    // otherwise, reset the last limit to step
+    if(value > this.__lastLimit) {
+      this.__lastLimit = value;
     }
-    // if no key is given, update the last key
-    if (this.__lastKey) {
-      Telescope.plus.SessionLocal.set(this.__lastKey, value);
-    }
-
+    // else{
+    //   this.__lastLimit = this.__step;
+    // }
   },
   get(params){
+    console.log({params, 'LastListLimit.get': 1});
+    let key = this.generate_key(params);
+    // if key are same, return last limit
+    // otherwise, return the default page limit
+    if(key === this.__lastKey) {
+      return this.__lastLimit;
+    }else{
+      this.__lastKey = key;
+      this.__lastLimit = this.__step;
+      return this.__step;
+    }
+  },
+  generate_key(params){
     let key = '';
-    let defaultLimit = Telescope.settings.get("postsPerPage", 10);
     if (params) {
       if (params.view) {
         key += params.view
@@ -67,17 +83,7 @@ Telescope.plus.LastListLimit = {
         key += '-' + params.query
       }
     }
-    if (key && !this.__lastKey) {
-      this.__lastKey = key;
-    }
-    // if no params,
-    console.log(key + ": " + Telescope.plus.SessionLocal.get(key));
-    if (key === this.__lastKey && Telescope.plus.SessionLocal.get(key)) {
-      return Telescope.plus.SessionLocal.get(key)
-    } else if(key) {
-      this.set(key, defaultLimit)
-    }
-    return defaultLimit;
+    return key;
   }
 };
 
