@@ -13,23 +13,25 @@ class PostsHome extends Component {
 
     const params = {...this.getDefaultView(), ...this.props.location.query, listId: "posts.list.main"};
     const {selector, options} = Posts.parameters.get(params);
-    const limit = Telescope.plus.LastListLimit.get(params);
-
+    let limit = Telescope.plus.LastListLimit.get(params);
+    console.log(limit + ":  Telescope.plus.LastListLimit.get(params)");
+    console.log("{selector, options}");
+    console.log({selector, options});
     return (
-      <ListContainer
-        collection={Posts}
-        publication="posts.list"
-        selector={selector}
-        options={options}
-        terms={params}
-        joins={Posts.getJoins()}
-        component={Telescope.components.PostsList}
-        cacheSubscription={true}
-        listId={params.listId}
-        //limit={Telescope.settings.get("postsPerPage", 10)}
-        limit={limit}
-      />
-    )
+        <ListContainer
+            collection={Posts}
+            publication="posts.list"
+            selector={selector}
+            options={options}
+            terms={params}
+            joins={Posts.getJoins()}
+            component={Telescope.components.PostsList}
+            cacheSubscription={true}
+            listId={params.listId}
+            //limit={Telescope.settings.get("postsPerPage", 10)}
+            limit={limit}
+        />
+    );
   }
 }
 

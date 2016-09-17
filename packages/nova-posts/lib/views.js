@@ -1,4 +1,6 @@
-import Posts from './collection.js'
+import Posts from './collection.js';
+// import Comments from "meteor/nova:comments";
+
 
 /**
  * @summary Post views are filters used for subscribing to and viewing posts
@@ -103,7 +105,33 @@ Posts.views.add("userPosts", function (terms) {
       isFuture: {$ne: true}
     },
     options: {
-      limit: 5, 
+      limit: 5,
+      sort: {
+        postedAt: -1
+      }
+    }
+  };
+});
+
+/**
+ * @summary User commented  view
+ */
+Posts.views.add("userCommented", function (terms) {
+  // const comments = Comments.find({_id: terms.userId});
+  // let ids = [];
+  // _.forEach(comments, function (comment) {
+  //   ids.push[comment.postId];
+  // });
+  return {
+    selector: {
+      // _id: {
+      //   $in: ids
+      // },
+      status: Posts.config.STATUS_APPROVED,
+      isFuture: {$ne: true}
+    },
+    options: {
+      limit: 5,
       sort: {
         postedAt: -1
       }

@@ -1,27 +1,30 @@
 import Telescope from 'meteor/nova:lib';
 import React from 'react';
 import Posts from "meteor/nova:posts";
+import Users from 'meteor/nova:users';
 
 const PostsPage = ({document, currentUser}) => {
-  
-  const post = document;
-  const htmlBody = {__html: post.htmlBody};
 
-  return (
-    <div className="posts-page">
+    const post = document;
+    // console.log(currentUser);
 
-      <Telescope.components.HeadTags url={Posts.getLink(post)} title={post.title} image={post.thumbnailUrl} />
-      
-      <Telescope.components.PostsItem post={post}/>
+    const htmlBody = {__html: post.htmlBody};
 
-      {post.htmlBody ? <div className="posts-page-body" dangerouslySetInnerHTML={htmlBody}></div> : null}
+    return (
+        <div className="posts-page">
 
-      {/*<SocialShare url={ Posts.getLink(post) } title={ post.title }/>*/}
+            <Telescope.components.HeadTags url={Posts.getLink(post)} title={post.title} image={post.thumbnailUrl}/>
 
-      <Telescope.components.PostsCommentsThread document={post} currentUser={currentUser}/>
+            <Telescope.components.PostsItem post={post}/>
 
-    </div>
-  )
+            {post.htmlBody ? <div className="posts-page-body" dangerouslySetInnerHTML={htmlBody}></div> : null}
+
+            {/*<SocialShare url={ Posts.getLink(post) } title={ post.title }/>*/}
+
+            <Telescope.components.PostsCommentsThread document={post} currentUser={currentUser}/>
+
+        </div>
+    );
 };
 
 PostsPage.displayName = "PostsPage";

@@ -25,6 +25,9 @@ class UsersMenu extends Component {
             <LinkContainer to={`/users/${user.telescope.slug}`} /*to={{name: "users.single", params: {slug: user.telescope.slug}}}*/>
               <MenuItem className="dropdown-item" eventKey="1"><FormattedMessage id="users.profile"/></MenuItem>
             </LinkContainer>
+            <LinkContainer to={`/users/${user.telescope.slug}/commented`} /*to={{name: "users.single", params: {slug: user.telescope.slug}}}*/>
+              <MenuItem className="dropdown-item" eventKey="1"><FormattedMessage id="users.commented"/></MenuItem>
+            </LinkContainer>
             <LinkContainer to={`/account`} /*to={{name: "account"}}*/>
               <MenuItem className="dropdown-item" eventKey="2"><FormattedMessage id="users.edit_account"/></MenuItem>
             </LinkContainer>

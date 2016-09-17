@@ -1,11 +1,12 @@
 import Posts from "meteor/nova:posts";
 import Users from 'meteor/nova:users';
+import Telescope from 'meteor/nova:lib';
 
 /*
-Let's assign a color to each post (why? cause we want to, that's why).
-We'll do that by adding a custom field to the Posts collection.
-Note that this requires our custom package to depend on nova:posts and nova:users.
-*/
+ Let's assign a color to each post (why? cause we want to, that's why).
+ We'll do that by adding a custom field to the Posts collection.
+ Note that this requires our custom package to depend on nova:posts and nova:users.
+ */
 
 // check if user can create a new post
 const canInsert = user => Users.canDo(user, "posts.new");
@@ -37,10 +38,11 @@ Posts.addField(
   }
 );
 
+
 /*
-The main post list view uses a special object to determine which fields to publish,
-so we also add our new field to that object:
-*/
+ The main post list view uses a special object to determine which fields to publish,
+ so we also add our new field to that object:
+ */
 
 import PublicationUtils from 'meteor/utilities:smart-publications';
 
