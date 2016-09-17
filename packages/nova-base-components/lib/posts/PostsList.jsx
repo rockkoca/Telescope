@@ -3,9 +3,12 @@ import React from 'react';
 
 const PostsList = ({results, currentUser, hasMore, ready, count, totalCount, loadMore, showHeader = true}) => {
 
-    console.log('count');
-    console.log(count);
-    console.log(results);
+    // console.log('count');
+    // console.log(count);
+    // console.log(results);
+    // update the page limit, if users clicked load more.
+    // if we do not update it, the page limit will reset when the user go back to post list.
+
     Telescope.plus.LastListLimit.set(count);
     if (!!results.length) {
         return (

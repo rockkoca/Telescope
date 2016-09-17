@@ -20,7 +20,7 @@ Telescope.strings.en = {
   "posts.load_more": "加载更多",
   "posts.search": "搜索",
   "posts.view": "浏览",
-  "posts.top": "TOP",
+  "posts.top": "默认",
   "posts.new": "最新",
   "posts.best": "精华",
   "posts.pending": "审核中",
@@ -54,7 +54,7 @@ Telescope.strings.en = {
   "comments.body": "正文",
   "comments.rate_limit_error": "请勿灌水！ {details}秒内不能评论.",
 
-  "users.profile": "简介",
+  "users.profile": "我的主题",
   "users.complete_profile": "完成您的简介",
   "users.edit_account": "编辑账户",
   "users.edit_success": "用户 “{name}” 编辑成功",

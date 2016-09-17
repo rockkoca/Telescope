@@ -46,8 +46,8 @@ Telescope.plus.LastListLimit = {
   __step: Telescope.settings.get("postsPerPage", 10),
   __lastLimit: this.__step,
   set(value){
-    console.log('Telescope.plus.LastListLimit.set()');
-    console.log(value, this.__lastKey);
+    // console.log('Telescope.plus.LastListLimit.set()');
+    // console.log(value, this.__lastKey);
     // update the last limit only if the new value bigger than last limit
     // otherwise, reset the last limit to step
     if(value > this.__lastLimit) {
@@ -58,7 +58,7 @@ Telescope.plus.LastListLimit = {
     // }
   },
   get(params){
-    console.log({params, 'LastListLimit.get': 1});
+    // console.log({params, 'LastListLimit.get': 1});
     let key = this.generate_key(params);
     // if key are same, return last limit
     // otherwise, return the default page limit

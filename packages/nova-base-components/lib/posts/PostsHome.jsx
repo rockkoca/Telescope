@@ -13,10 +13,7 @@ class PostsHome extends Component {
 
     const params = {...this.getDefaultView(), ...this.props.location.query, listId: "posts.list.main"};
     const {selector, options} = Posts.parameters.get(params);
-    console.log('PostsHome render');
-    // Session.set('posts.params', params);
     const limit = Telescope.plus.LastListLimit.get(params);
-    console.log({limit, options});
 
     return (
       <ListContainer 
