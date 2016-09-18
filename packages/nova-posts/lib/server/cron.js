@@ -36,22 +36,24 @@ const addJob = function () {
 
 Meteor.startup(function () {
   addJob();
-  Posts.createIndex({createdAt: -1}, {background: true});
-  Posts.createIndex({createdAt: 1}, {background: true});
-  Posts.createIndex({postedAt: -1}, {background: true});
-  Posts.createIndex({postedAt: 1}, {background: true});
-  Posts.createIndex({commenters: -1}, {background: true});
-  Posts.createIndex({userId: -1}, {background: true});
-  Posts.createIndex({userId: 1}, {background: true});
-  Posts.createIndex({isFuture: -1}, {background: true});
-  Posts.createIndex({upvotes: -1}, {background: true});
-  Posts.createIndex({downvotes: -1}, {background: true});
-  Posts.createIndex({baseScore: -1}, {background: true});
-  Posts.createIndex({score: -1}, {background: true});
-  Posts.createIndex({upvoters: -1}, {background: true});
-  Posts.createIndex({lastCommentedAt: -1}, {background: true});
-  Posts.createIndex({sticky: -1, score: -1}, {background: true});
-  Posts.createIndex({sticky: -1, postedAt: -1}, {background: true});
-  Posts.createIndex({sticky: -1, baseScore: -1}, {background: true});
+  Posts._ensureIndex({createdAt: -1}, {background: true});
+  Posts._ensureIndex({createdAt: 1}, {background: true});
+  Posts._ensureIndex({postedAt: -1}, {background: true});
+  Posts._ensureIndex({postedAt: 1}, {background: true});
+  Posts._ensureIndex({commenters: -1}, {background: true});
+  Posts._ensureIndex({userId: -1}, {background: true});
+  Posts._ensureIndex({userId: 1}, {background: true});
+  Posts._ensureIndex({isFuture: -1}, {background: true});
+  Posts._ensureIndex({upvotes: -1}, {background: true});
+  Posts._ensureIndex({downvotes: -1}, {background: true});
+  Posts._ensureIndex({baseScore: -1}, {background: true});
+  Posts._ensureIndex({score: -1}, {background: true});
+  Posts._ensureIndex({upvoters: -1}, {background: true});
+  Posts._ensureIndex({lastCommentedAt: -1}, {background: true});
+  Posts._ensureIndex({lastCommentedAt: -1}, {background: true});
+  Posts._ensureIndex({categories: -1}, {background: true});
+  Posts._ensureIndex({sticky: -1, score: -1}, {background: true});
+  Posts._ensureIndex({sticky: -1, postedAt: -1}, {background: true});
+  Posts._ensureIndex({sticky: -1, baseScore: -1}, {background: true});
 });
 
