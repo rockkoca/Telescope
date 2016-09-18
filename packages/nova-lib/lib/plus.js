@@ -177,3 +177,71 @@ Telescope.plus.ViewHostory = {
   }
 };
 
+//---------------------------------------- ChangeServer ----------------------------//
+
+Telescope.plus.changeServer = (app_url) => {
+  try {
+    Meteor.connection = Meteor.connect(app_url);
+    _.each(['subscribe', 'methods', 'call', 'apply', 'status', 'reconnect', 'disconnect'],
+      function (name) {
+        Meteor[name] = _.bind(Meteor.connection[name], Meteor.connection);
+      });
+    Package.reload = true;
+    Accounts.connection = Meteor.connection;
+    return 'New server: ' + app_url;
+  } catch (e) {
+    console.log(e);
+  }
+
+};
+
+Telescope.plus.autoSwitchServer = {
+  default_source: ['https://raw.githubusercontent.com/rockkoca/qidian-server/master/servers/json.json'],
+  backup_source_key: 'server_sources',
+  fetch(){
+    this.unblock();
+    const self = this;
+    Meteor.http.call("GET", this.default_source[0], function (error, response) {
+      // if no error, switch the server
+      if (!error) {
+        self.switch(response.content)
+      } else {
+        // else, try to this again
+        Meteor.setTimeout(function () {
+          self.fetch();
+        }, 3000);
+      }
+    });
+    console.log(sources);
+    return JSON.parse(sources.content)
+  },
+  switch(content = false){
+    if (content) {
+      Telescope.plus.changeServer(JSON.parse(content)[0].url);
+    } else {
+      this.fetch();
+    }
+  }
+};
+
+Meteor.startup(function () {
+  if (Meteor.isCordova) {
+    Tracker.autorun(function () {
+      if (!Meteor.connection) {
+        // Telescope.plus.autoSwitchServer.switch();
+      }
+    });
+    if (Meteor.isClient) {
+      // Telescope.plus.changeServer('http://192.168.0.20:3100');
+      // Meteor.connection = DDP.connect('http://192.168.0.20:3100');
+      // Accounts.connection = Meteor.connection;
+      // // Meteor.users = new Meteor.Collection('users');
+      // // Meteor.connection.subscribe('users');
+      // // Meteor.connection.subscribe('remote_collection');
+      // // rest if the code just as always
+      // _.each(['subscribe', 'methods', 'call', 'apply', 'status', 'reconnect', 'disconnect'], function (name) {
+      //   Meteor[name] = _.bind(Meteor.connection[name], Meteor.connection);
+      // });
+    }
+  }
+});

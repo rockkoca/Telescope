@@ -105,22 +105,6 @@ Telescope.statuses = [
   }
 ];
 
-//---------------------------------------- ChangeServer ----------------------------//
 
-Telescope.changeServer = (app_url) => {
-  try{
-    Meteor.connection = Meteor.connect(app_url);
-    _.each(['subscribe', 'methods', 'call', 'apply', 'status', 'reconnect', 'disconnect'],
-      function (name) {
-        Meteor[name] = _.bind(Meteor.connection[name], Meteor.connection);
-      });
-    Package.reload = false;
-    Accounts.connection = Meteor.connection;
-    return 'New server: ' + app_url;
-  }catch (e){
-    console.log(e);
-  }
-
-};
 
 export default Telescope;

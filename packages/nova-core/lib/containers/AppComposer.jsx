@@ -6,6 +6,7 @@ import Events from "meteor/nova:events";
 function composer(props, onData) {
 
   const subscriptions = Telescope.subscriptions.map((sub) => Meteor.subscribe(sub.name, sub.arguments));
+  console.log(subscriptions);
 
   const data = {
     currentUser: Meteor.user(),

@@ -112,32 +112,31 @@ Meteor.publish('posts.single', function (terms) {
   /**
    * update the users view history in order to make users keep track of the view history
    */
-  let viewHistory = Users.getSetting(currentUser, 'viewHistory', []);
-  // console.log('before');
-  // console.log(viewHistory);
-  // console.log('after');
-  const postId = post._id;
-  viewHistory.unshift({postId: postId, viewTime: new Date()});
-  // make this list unique
-  let uniqueHistory = [];
-  let tempKey = {};
-  _.forEach(viewHistory, function (item) {
-    if (!tempKey[item.postId]) {
-      uniqueHistory.push(item);
-      tempKey[item.postId] = true;
-    }
-  });
-  // console.log(viewHistory);
-  // console.log(currentUser);
-  try {
-    // Users.methods.setSetting(currentUser, 'viewHistory', viewHistory);
-    // above code does not update the existing viewHistory
-    //TODO debug this later
-    Users.update(currentUser._id, {$set: {'telescope.viewHistory': uniqueHistory}});
-  } catch (e) {
-    // console.log(Telescope.schemas.viewHistory);
-    console.log(e)
-  }
+  // let viewHistory = Users.getSetting(currentUser, 'viewHistory', []);
+  // // console.log('before');
+  // // console.log(viewHistory);
+  // // console.log('after');
+  // const postId = post._id;
+  // viewHistory.unshift({postId: postId, viewTime: new Date()});
+  // // make this list unique
+  // let uniqueHistory = [];
+  // let tempKey = {};
+  // _.forEach(viewHistory, function (item) {
+  //   if (!tempKey[item.postId]) {
+  //     uniqueHistory.push(item);
+  //     tempKey[item.postId] = true;
+  //   }
+  // });
+  // // console.log(viewHistory);
+  // // console.log(currentUser);
+  // try {
+  //   // Users.methods.setSetting(currentUser, 'viewHistory', viewHistory);
+  //   // above code does not update the existing viewHistory
+  //   Users.update(currentUser._id, {$set: {'telescope.viewHistory': uniqueHistory}});
+  // } catch (e) {
+  //   // console.log(Telescope.schemas.viewHistory);
+  //   console.log(e)
+  // }
   // console.log(Users.getSetting(currentUser, 'viewHistory', []));
   ///////////////////////////////////////////////////////////////
   //////////////// =>  =>  => end////////////////////////////////
