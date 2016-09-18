@@ -117,16 +117,19 @@ Posts.views.add("userPosts", function (terms) {
  * @summary User commented  view
  */
 Posts.views.add("userCommented", function (terms) {
-  // const comments = Comments.find({_id: terms.userId});
+  const userId = terms.userId;
   // let ids = [];
   // _.forEach(comments, function (comment) {
   //   ids.push[comment.postId];
   // });
+  // "commenters" : [ "ZrQFWPY6kLP5Dr8rG"]
+  // tags: { $in: ["appliances", "school"] }
   return {
     selector: {
       // _id: {
       //   $in: ids
       // },
+      commenters: { $in: [userId] },
       status: Posts.config.STATUS_APPROVED,
       isFuture: {$ne: true}
     },

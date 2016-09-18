@@ -1,5 +1,6 @@
 import Posts from "meteor/nova:posts";
 import Users from 'meteor/nova:users';
+import Comments from '../collection.js';
 
 Comments._ensureIndex({postId: 1});
 Comments._ensureIndex({parentCommentId: 1});
@@ -9,7 +10,7 @@ Comments._ensureIndex({parentCommentId: 1});
  * @param {Object} terms
  */
 Meteor.publish('comments.list', function (terms) {
-  
+
   const currentUser = this.userId && Meteor.users.findOne(this.userId);
 
   terms.currentUserId = this.userId; // add currentUserId to terms
@@ -29,10 +30,6 @@ Meteor.publish('comments.list', function (terms) {
 });
 
 
-
-
-
-
 // /**
 //  * Publish a single comment, along with all relevant users
 //  * @param {Object} terms
@@ -41,17 +38,15 @@ Meteor.publish('comments.list', function (terms) {
 
 //   check(terms, {_id: String});
 
-//   
-  
+//
+
 //   let commentIds = [terms._id];
 //   const childCommentIds = _.pluck(Comments.find({parentCommentId: terms._id}, {fields: {_id: 1}}).fetch(), '_id');
 //   commentIds = commentIds.concat(childCommentIds);
-  
+
 //   return Users.canView(currentUser) ? Comments.find({_id: {$in: commentIds}}, {sort: {score: -1, postedAt: -1}}) : [];
 
 // });
-
-
 
 
 // // Publish the post related to the current comment
@@ -60,7 +55,7 @@ Meteor.publish('comments.list', function (terms) {
 
 //   check(commentId, String);
 
-//   
+//
 
 //   if(Users.canViewById(this.userId)){
 //     var comment = Comments.findOne(commentId);
@@ -75,8 +70,8 @@ Meteor.publish('comments.list', function (terms) {
 
 //   check(commentId, String);
 
-//   
-    
+//
+
 //   var userIds = [];
 
 //   if(Users.canViewById(this.userId)){
@@ -92,7 +87,7 @@ Meteor.publish('comments.list', function (terms) {
 //       }
 
 //       return Meteor.users.find({_id: {$in: userIds}}, {fields: Users.pubsub.publicProperties});
-    
+
 //     }
 
 //   }

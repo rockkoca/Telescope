@@ -55,6 +55,9 @@ Telescope.strings.en = {
   "comments.rate_limit_error": "请勿灌水！ {details}秒内不能评论.",
 
   "users.profile": "我的主题",
+  "users.commented": "我的参与",
+  "users.collected": "我的收藏",
+  "users.history": "浏览记录",
   "users.complete_profile": "完成您的简介",
   "users.edit_account": "编辑账户",
   "users.edit_success": "用户 “{name}” 编辑成功",
