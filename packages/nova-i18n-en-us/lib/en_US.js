@@ -135,7 +135,7 @@ Telescope.strings.en = {
 
   "app.loading": "加载中…",
   "app.404": "您访问的页面可能去火星了.",
-  "app.powered_by": "乐悠悠",
+  "app.powered_by": "奇点社区 7Dian.PW",
   "app.or": "或者",
   "app.noPermission": "对不起 您无权限操作.",
 

@@ -3,7 +3,7 @@ import { FormattedMessage } from 'react-intl';
 
 const Footer = props => {
   return (
-    <div className="footer"><a href="http://telescopeapp.org" target="_blank"><FormattedMessage id="app.powered_by"/></a></div>
+    <div className="footer"><a href="https://7dian.pw" target="_blank"><FormattedMessage id="app.powered_by"/></a></div>
   )
 }
 
