@@ -41,7 +41,8 @@ App.accessRule('https://*.googleapis.com/*');
 App.accessRule('https://*.google.com/*');
 App.accessRule('https://*.gstatic.com/*');
 App.accessRule('https://raw.githubusercontent.com/*');
-App.accessRule('https://github.com/*');
+App.accessRule('https://*.github.com/*');
+App.accessRule('https://*.gravatar.com/*');
 
 App.setPreference('StatusBarOverlaysWebView', 'false');
 App.setPreference('StatusBarBackgroundColor', '#419cdb');
