@@ -199,12 +199,12 @@ Telescope.plus.autoSwitchServer = {
   default_source: ['https://raw.githubusercontent.com/rockkoca/qidian-server/master/servers/json.json'],
   backup_source_key: 'server_sources',
   fetch(){
-    this.unblock();
     const self = this;
     Meteor.http.call("GET", this.default_source[0], function (error, response) {
       // if no error, switch the server
       if (!error) {
-        self.switch(response.content)
+        console.log(JSON.parse(response.content));
+        // self.switch(response.content)
       } else {
         // else, try to this again
         Meteor.setTimeout(function () {
@@ -227,8 +227,9 @@ Telescope.plus.autoSwitchServer = {
 Meteor.startup(function () {
   if (Meteor.isCordova) {
     Tracker.autorun(function () {
-      if (!Meteor.connection) {
-        // Telescope.plus.autoSwitchServer.switch();
+      if (!Meteor.status().connected) {
+        Telescope.plus.autoSwitchServer.fetch();
+        // alert('server blocked ');
       }
     });
     if (Meteor.isClient) {
