@@ -1,0 +1,84 @@
+{
+  "public": {
+    "title": "奇点",
+    "tagline":"奇点社区",
+
+    "logoUrl": "/img/logo.png",
+    "logoHeight": "80",
+    "logoWidth": "250",
+    "faviconUrl": "/favicon.ico",
+
+    "requirePostsApproval":false,
+    "requireViewInvite":true,
+    "requirePostInvite":true,
+    "enableNewsletter":false,
+    "autoSubscribe":false,
+    "emailNotifications":true,
+    "postInterval": 120,
+    "RSSLinksPointTo": "link",
+    "commentInterval": 20,
+    "maxPostsPerDay": 10,
+    "startInvitesCount": 5,
+    "postsPerPage": 10,
+
+    "language": "en",
+    "locale": "en",
+    
+    "twitterAccount": "",
+    "facebookPage": "",
+
+    "googleAnalyticsId":""
+  },
+
+
+  "defaultEmail": "",
+  "mailUrl": "s",
+  "scoreUpdateInterval": "30",
+
+  "embedlyKey":"123foo",
+  "mailChimpAPIKey": "",
+  "mailChimpListId": "",
+
+  "categories": [
+    {
+      "name": "武侠玄幻区",
+      "description": "武侠玄幻区",
+      "order": 4,
+      "slug": "wuxia"
+    },
+    {
+      "name": "校园",
+      "description": "校园",
+      "order": 7,
+      "slug": "miqing"
+    },
+    {
+      "name": "另类",
+      "description": "另类",
+      "order": 10,
+      "slug": "linglei"
+    },
+    {
+      "name": "人气",
+      "description": "人气",
+      "order": 2,
+      "slug": "renqi"
+    },
+    {
+      "name": "原创",
+      "description": "原创",
+      "order": 1,
+      "slug": "yuanchuang"
+    }
+  ],
+  "oAuth": {
+    "twitter": {
+      "consumerKey": "foo",
+      "secret": "bar"
+    },
+    "facebook": {
+      "appId": "foo",
+      "secret": "bar"
+    }
+  }
+}
