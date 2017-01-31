@@ -1,3 +1,4 @@
+import { newMutation } from 'meteor/nova:core';
 import moment from 'moment';
 import Posts from "meteor/nova:posts";
 import Comments from "meteor/nova:comments";
@@ -9,26 +10,37 @@ var toTitleCase = function (str) {
 };
 
 var createPost = function (slug, postedAt, username, thumbnail) {
+  
+  const user = Users.findOne({username: username});
+
   var post = {
     postedAt: postedAt,
     body: Assets.getText("content/" + slug + ".md"),
     title: toTitleCase(slug.replace(/_/g, ' ')),
     dummySlug: slug,
     isDummy: true,
-    userId: Meteor.users.findOne({username: username})._id
+    userId: user._id
   };
 
   if (typeof thumbnail !== "undefined")
     post.thumbnailUrl = "/packages/nova_getting-started/content/images/" + thumbnail;
 
-  Posts.methods.new(post);
+  newMutation({
+    collection: Posts, 
+    document: post,
+    currentUser: user,
+    validate: false
+  });
+
 };
 
 var createComment = function (slug, username, body, parentBody) {
 
+  const user = Users.findOne({username: username});
+
   var comment = {
     postId: Posts.findOne({dummySlug: slug})._id,
-    userId: Meteor.users.findOne({username: username})._id,
+    userId: user._id,
     body: body,
     isDummy: true,
     disableNotifications: true
@@ -37,7 +49,12 @@ var createComment = function (slug, username, body, parentBody) {
   if (parentComment)
     comment.parentCommentId = parentComment._id;
 
-  Comments.methods.new(comment);
+  newMutation({
+    collection: Comments, 
+    document: comment,
+    currentUser: user,
+    validate: false
+  });
 };
 
 var createDummyUsers = function () {
@@ -92,8 +109,8 @@ var createDummyComments = function () {
 
 };
 
-deleteDummyContent = function () {
-  Meteor.users.remove({'profile.isDummy': true});
+var deleteDummyContent = function () {
+  Users.remove({'profile.isDummy': true});
   Posts.remove({isDummy: true});
   Comments.remove({isDummy: true});
 };

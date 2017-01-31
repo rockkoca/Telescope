@@ -11,7 +11,7 @@
   margin-bottom: $vmargin;
 }
 
-.post-lists-header-categories{
+.posts-list-header-categories{
   @include small{
     margin: 0 auto;
     margin-bottom: $vmargin;
@@ -49,8 +49,13 @@
       background: $light-blue;
     }
   }
-  .btn-group{
-    margin-right: $hmargin;
+}
+
+.posts-list-header{
+  @include medium-large{
+    .search-form, .posts-list-header-categories button, .posts-views button{
+      width: 160px;
+    }
   }
 }
 
@@ -156,6 +161,7 @@
 }
 
 .posts-categories{
+  flex-wrap: wrap;
   @include medium-large{
     margin-left: 5px;
   }

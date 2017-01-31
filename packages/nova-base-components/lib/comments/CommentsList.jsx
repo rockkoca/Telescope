@@ -1,20 +1,14 @@
-import Telescope from 'meteor/nova:lib';
+import { Components, registerComponent } from 'meteor/nova:lib';
 import React from 'react';
-import {injectIntl, FormattedMessage} from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
-const CommentsList = ({results, currentUser, hasMore, ready, count, totalCount, loadMore}) => {
+const CommentsList = ({comments, commentCount}) => {
 
-  if (!!results.length) {
+  if (commentCount > 0) {
     return (
       <div className="comments-list">
-        {results.map(comment => <Telescope.components.CommentsNode comment={comment} key={comment._id} currentUser={currentUser}/>)}
-        {hasMore ? (ready ? <Telescope.components.CommentsLoadMore loadMore={loadMore} count={count} totalCount={totalCount} /> : <Telescope.components.Loading/>) : null}
-      </div>
-    )
-  } else if (!ready) {
-    return (
-      <div className="comments-list">
-        <Telescope.components.Loading/>
+        {comments.map(comment => <Components.CommentsNode comment={comment} key={comment._id} />)}
+        {/*hasMore ? (ready ? <Components.CommentsLoadMore loadMore={loadMore} count={count} totalCount={totalCount} /> : <Components.Loading/>) : null*/}
       </div>
     )
   } else {
@@ -24,11 +18,11 @@ const CommentsList = ({results, currentUser, hasMore, ready, count, totalCount, 
           <FormattedMessage id="comments.no_comments"/>
         </p>
       </div>
-    )  
+    )
   }
-  
+
 };
 
 CommentsList.displayName = "CommentsList";
 
-module.exports = CommentsList;
+registerComponent('CommentsList', CommentsList);

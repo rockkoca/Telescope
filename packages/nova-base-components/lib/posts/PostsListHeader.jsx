@@ -1,6 +1,5 @@
-import Telescope from 'meteor/nova:lib';
+import { Components, registerComponent } from 'meteor/nova:lib';
 import React from 'react';
-import { ListContainer } from "meteor/utilities:react-list-container";
 import Categories from "meteor/nova:categories";
 
 const PostsListHeader = () => {
@@ -8,17 +7,11 @@ const PostsListHeader = () => {
   return (
     <div>
       <div className="posts-list-header">
-        <div className="posts-lists-header-categories">
-          <ListContainer 
-            collection={Categories} 
-            limit={0} 
-            resultsPropName="categories" 
-            component={Telescope.components.CategoriesList}
-            listId="categories"
-          />
+        <div className="posts-list-header-categories">
+          <Components.CategoriesList />
         </div>
-        <Telescope.components.PostsViews />
-        <Telescope.components.SearchForm/>
+        <Components.PostsViews />
+        <Components.SearchForm/>
       </div>
     </div>
   )
@@ -26,5 +19,4 @@ const PostsListHeader = () => {
 
 PostsListHeader.displayName = "PostsListHeader";
 
-module.exports = PostsListHeader;
-export default PostsListHeader;
+registerComponent('PostsListHeader', PostsListHeader);

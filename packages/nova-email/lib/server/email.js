@@ -1,8 +1,8 @@
-import Telescope from 'meteor/nova:lib';
 import NovaEmail from '../namespace.js';
 import Juice from 'juice';
 import htmlToText from 'html-to-text';
 import Handlebars from 'handlebars';
+import { Utils, getSetting } from 'meteor/nova:lib';
 
 NovaEmail.templates = {};
 
@@ -37,18 +37,18 @@ NovaEmail.getTemplate = function (templateName) {
 NovaEmail.buildTemplate = function (htmlContent, optionalProperties = {}) {
 
   var emailProperties = {
-    secondaryColor: Telescope.settings.get('secondaryColor', '#444444'),
-    accentColor: Telescope.settings.get('accentColor', '#DD3416'),
-    siteName: Telescope.settings.get('title', "Nova"),
-    tagline: Telescope.settings.get('tagline'),
-    siteUrl: Telescope.utils.getSiteUrl(),
+    secondaryColor: getSetting('secondaryColor', '#444444'),
+    accentColor: getSetting('accentColor', '#DD3416'),
+    siteName: getSetting('title', "Nova"),
+    tagline: getSetting('tagline'),
+    siteUrl: Utils.getSiteUrl(),
     body: htmlContent,
     unsubscribe: '',
-    accountLink: Telescope.utils.getSiteUrl()+'account',
-    footer: Telescope.settings.get('emailFooter'),
-    logoUrl: Telescope.settings.get('logoUrl'),
-    logoHeight: Telescope.settings.get('logoHeight'),
-    logoWidth: Telescope.settings.get('logoWidth'),
+    accountLink: Utils.getSiteUrl()+'account',
+    footer: getSetting('emailFooter'),
+    logoUrl: getSetting('logoUrl'),
+    logoHeight: getSetting('logoHeight'),
+    logoWidth: getSetting('logoWidth'),
     ...optionalProperties
   };
 
@@ -66,21 +66,21 @@ NovaEmail.send = function(to, subject, html, text){
   // TODO: limit who can send emails
   // TODO: fix this error: Error: getaddrinfo ENOTFOUND
 
-  var from = Telescope.settings.get('defaultEmail', 'noreply@example.com');
-  var siteName = Telescope.settings.get('title', 'Telescope');
+  var from = getSetting('defaultEmail', 'noreply@example.com');
+  var siteName = getSetting('title', 'Telescope');
   subject = '['+siteName+'] '+subject;
 
   if (typeof text === 'undefined'){
     // Auto-generate text version if it doesn't exist. Has bugs, but should be good enough.
-    var text = htmlToText.fromString(html, {
+    text = htmlToText.fromString(html, {
         wordwrap: 130
     });
   }
 
-  console.log('//////// sending email…');
-  console.log('from: '+from);
-  console.log('to: '+to);
-  console.log('subject: '+subject);
+  console.log('//////// sending email…'); // eslint-disable-line
+  console.log('from: '+from); // eslint-disable-line
+  console.log('to: '+to); // eslint-disable-line
+  console.log('subject: '+subject); // eslint-disable-line
   // console.log('html: '+html);
   // console.log('text: '+text);
 
@@ -95,8 +95,8 @@ NovaEmail.send = function(to, subject, html, text){
   try {
     Email.send(email);
   } catch (error) {
-    console.log("// error while sending email:")
-    console.log(error)
+    console.log("// error while sending email:"); // eslint-disable-line
+    console.log(error); // eslint-disable-line
   }
 
   return email;

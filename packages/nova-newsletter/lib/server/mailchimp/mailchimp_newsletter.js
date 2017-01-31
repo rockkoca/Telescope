@@ -1,35 +1,38 @@
+/* eslint-disable no-console */
+
 // newsletter scheduling with MailChimp
 
-import Telescope from 'meteor/nova:lib';
-import Newsletter from '../../namespace.js';
-import MailChimp from './mailchimp_api.js';
+import Posts from 'meteor/nova:posts';
 import NovaEmail from 'meteor/nova:email';
 import htmlToText from 'html-to-text';
 import moment from 'moment';
+import Newsletter from '../../namespace.js';
+import MailChimp from './mailchimp_api.js';
+import { Utils, getSetting } from 'meteor/nova:core';
 
 const defaultPosts = 5;
 
 Newsletter.scheduleNextWithMailChimp = function (isTest = false) {
-  var posts = Newsletter.getPosts(Telescope.settings.get('postsPerNewsletter', defaultPosts));
+  var posts = Newsletter.getPosts(getSetting('postsPerNewsletter', defaultPosts));
   if(!!posts.length){
     return Newsletter.scheduleWithMailChimp(Newsletter.build(posts), isTest);
   }else{
-    var result = 'No posts to schedule today…';
+    var result = {result: 'No posts to schedule today…'};
     return result;
   }
 };
 
 Newsletter.scheduleWithMailChimp = function (campaign, isTest = false) {
 
-  var apiKey = Telescope.settings.get('mailChimpAPIKey');
-  var listId = Telescope.settings.get('mailChimpListId');
+  var apiKey = getSetting('mailChimpAPIKey');
+  var listId = getSetting('mailChimpListId');
 
   if(!!apiKey && !!listId){
 
     var wordCount = 15;
     var subject = campaign.subject;
     while (subject.length >= 150){
-      subject = Telescope.utils.trimWords(subject, wordCount);
+      subject = Utils.trimWords(subject, wordCount);
       wordCount--;
     }
 
@@ -37,14 +40,14 @@ Newsletter.scheduleWithMailChimp = function (campaign, isTest = false) {
 
       var api = new MailChimp(apiKey);
       var text = htmlToText.fromString(campaign.html, {wordwrap: 130});
-      var defaultEmail = Telescope.settings.get('defaultEmail');
+      var defaultEmail = getSetting('defaultEmail');
       var campaignOptions = {
         type: 'regular',
         options: {
           list_id: listId,
           subject: subject,
           from_email: defaultEmail,
-          from_name: Telescope.settings.get('title')
+          from_name: getSetting('title')
         },
         content: {
           html: campaign.html,
@@ -68,14 +71,14 @@ Newsletter.scheduleWithMailChimp = function (campaign, isTest = false) {
       };
 
       // schedule campaign
-      var schedule = api.call('campaigns', 'schedule', scheduleOptions);
+      var schedule = api.call('campaigns', 'schedule', scheduleOptions); // eslint-disable-line
 
       console.log('// Newsletter scheduled for '+scheduledTime);
       // console.log(schedule)
 
       // if this is not a test, mark posts as sent
       if (!isTest)
-        var updated = Posts.update({_id: {$in: campaign.postIds}}, {$set: {scheduledAt: new Date()}}, {multi: true})
+        var updated = Posts.update({_id: {$in: campaign.postIds}}, {$set: {scheduledAt: new Date()}}, {multi: true}) // eslint-disable-line
 
       // send confirmation email
       var confirmationHtml = NovaEmail.getTemplate('newsletterConfirmation')({

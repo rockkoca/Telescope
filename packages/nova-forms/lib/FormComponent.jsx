@@ -4,7 +4,7 @@ import FRC from 'formsy-react-components';
 
 import DateTime from './DateTime.jsx';
 
-import Utils from './utils.js';
+// import Utils from './utils.js';
 
 const Checkbox = FRC.Checkbox;
 // const CheckboxGroup = FRC.CheckboxGroup;
@@ -21,13 +21,21 @@ class FormComponent extends Component {
   }
 
   handleBlur() {
-    this.props.updateCurrentValue(this.props.name, this.formControl.getValue());
+    // see https://facebook.github.io/react/docs/more-about-refs.html
+    if (this.formControl !== null) {
+      this.props.updateCurrentValue(this.props.name, this.formControl.getValue());
+    }
   }
 
   renderComponent() {
 
+    // see https://facebook.github.io/react/warnings/unknown-prop.html
+    const { control, group, updateCurrentValue, document, ...rest } = this.props; // eslint-disable-line
+
+    const base = this.props.control === "function" ? this.props : rest;
+
     const properties = {
-      ...this.props,
+      ...base,
       onBlur: this.handleBlur,
       ref: (ref) => this.formControl = ref
     };
@@ -35,7 +43,7 @@ class FormComponent extends Component {
     // if control is a React component, use it
     if (typeof this.props.control === "function") {
 
-      return <this.props.control {...properties} />
+      return <this.props.control {...properties} document={document} />
 
     } else { // else pick a predefined component
 
@@ -45,7 +53,7 @@ class FormComponent extends Component {
         case "textarea":
           return <Textarea      {...properties} />;
         case "checkbox":
-          return <Checkbox      {...properties} />;        
+          return <Checkbox      {...properties} />;
         // note: checkboxgroup cause React refs error
         case "checkboxgroup":
           return <CheckboxGroup  {...properties} />;
@@ -55,7 +63,7 @@ class FormComponent extends Component {
           return <Select        {...properties} />;
         case "datetime":
           return <DateTime      {...properties} />;
-        default: 
+        default:
           return <Input         {...properties} type="text" />;
       }
 
@@ -75,11 +83,12 @@ class FormComponent extends Component {
 }
 
 FormComponent.propTypes = {
+  document: React.PropTypes.object,
   name: React.PropTypes.string,
   label: React.PropTypes.string,
   value: React.PropTypes.any,
   placeholder: React.PropTypes.string,
-  prefilledValue: React.PropTypes.any, 
+  prefilledValue: React.PropTypes.any,
   options: React.PropTypes.any,
   control: React.PropTypes.any,
   datatype: React.PropTypes.any,

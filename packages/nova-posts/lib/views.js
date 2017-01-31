@@ -1,3 +1,4 @@
+import Users from 'meteor/nova:users';
 import Posts from './collection.js'
 
 /**
@@ -103,7 +104,7 @@ Posts.views.add("userPosts", function (terms) {
       isFuture: {$ne: true}
     },
     options: {
-      limit: 5, 
+      limit: 5,
       sort: {
         postedAt: -1
       }
@@ -115,8 +116,8 @@ Posts.views.add("userPosts", function (terms) {
  * @summary User upvoted posts view
  */
 Posts.views.add("userUpvotedPosts", function (terms) {
-  var user = Meteor.users.findOne(terms.userId);
-  var postsIds = _.pluck(user.telescope.upvotedPosts, "itemId");
+  var user = Users.findOne(terms.userId);
+  var postsIds = _.pluck(user.upvotedPosts, "itemId");
   return {
     selector: {_id: {$in: postsIds}, userId: {$ne: terms.userId}}, // exclude own posts
     options: {limit: 5, sort: {postedAt: -1}}
@@ -127,8 +128,8 @@ Posts.views.add("userUpvotedPosts", function (terms) {
  * @summary User downvoted posts view
  */
 Posts.views.add("userDownvotedPosts", function (terms) {
-  var user = Meteor.users.findOne(terms.userId);
-  var postsIds = _.pluck(user.telescope.downvotedPosts, "itemId");
+  var user = Users.findOne(terms.userId);
+  var postsIds = _.pluck(user.downvotedPosts, "itemId");
   // TODO: sort based on votedAt timestamp and not postedAt, if possible
   return {
     selector: {_id: {$in: postsIds}},

@@ -1,50 +1,19 @@
-import Telescope from 'meteor/nova:lib';
+import { Components, registerComponent, getSetting } from 'meteor/nova:core';
 import React, { PropTypes, Component } from 'react';
-import { Button } from 'react-bootstrap';
 import moment from 'moment';
 
-class PostsDaily extends Component{
-  
-  constructor(props) {
-    super(props);
-    this.loadMoreDays = this.loadMoreDays.bind(this);
-    this.state = {days: props.days};
-  }
+const PostsDaily = props => {
+  // const terms = props.location && props.location.query;
+  const numberOfDays = getSetting('numberOfDays', 5);
+  const terms = {
+    view: 'top',
+    after: moment().subtract(numberOfDays - 1, 'days').format("YYYY-MM-DD"),
+    before: moment().format("YYYY-MM-DD"),
+  };
 
-  // for a number of days "n" return dates object for the past n days
-  getLastNDates(n) {
-    return _.range(n).map(
-      i => moment().subtract(i, 'days').startOf('day').toDate()
-    );
-  }
+  return <Components.PostsDailyList terms={terms}/>
+};
 
-  loadMoreDays(e) {
-    e.preventDefault();
-    this.setState({
-      days: this.state.days + this.props.increment
-    });
-  }
+PostsDaily.displayName = "PostsDaily";
 
-  render() {
-    return (
-      <div className="posts-daily">
-        <Telescope.components.PostsListHeader />
-        {this.getLastNDates(this.state.days).map((date, index) => <Telescope.components.PostsDay key={index} date={date} number={index}/>)}
-        <button className="posts-load-more" onClick={this.loadMoreDays}>Load More Days</button>
-      </div>
-    )
-  }
-}
-
-PostsDaily.propTypes = {
-  days: React.PropTypes.number,
-  increment: React.PropTypes.number
-}
-
-PostsDaily.defaultProps = {
-  days: 5,
-  increment: 5
-}
-
-module.exports = PostsDaily;
-export default PostsDaily;
+registerComponent('PostsDaily', PostsDaily);

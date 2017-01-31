@@ -1,5 +1,4 @@
 import React, { PropTypes, Component } from 'react';
-import NovaForm from "meteor/nova:forms";
 import Comments from "meteor/nova:comments";
 
 class CommentsNew extends Component {
@@ -18,9 +17,8 @@ class CommentsNew extends Component {
 
     return (
       <div className="comments-new-form">
-        <NovaForm 
-          collection={Comments} 
-          currentUser={this.context.currentUser}
+        <Components.SmartForm
+          collection={Comments}
           methodName="comments.new"
           prefilledProps={prefilledProps}
           successCallback={this.props.successCallback}
@@ -31,7 +29,7 @@ class CommentsNew extends Component {
     )
   }
 
-};
+}
 
 CommentsNew.propTypes = {
   postId: React.PropTypes.string.isRequired,

@@ -1,5 +1,5 @@
-import Telescope from 'meteor/nova:lib';
 import Events from '../collection.js';
+import { addCallback, getSetting } from 'meteor/nova:core';
 
 Events.analyticsRequest = function() {
   // Google Analytics
@@ -13,7 +13,8 @@ Events.analyticsRequest = function() {
 Events.analyticsInit = function() {
 
   // Google Analytics
-  if (googleAnalyticsId = Telescope.settings.get("googleAnalyticsId")){
+  const googleAnalyticsId = getSetting("googleAnalyticsId");
+  if (googleAnalyticsId) {
 
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -33,3 +34,7 @@ Events.analyticsInit = function() {
 
 Events.analyticsInit();
 
+function analyticsRequest () {
+  Events.analyticsRequest();
+}
+addCallback('router.onUpdate', analyticsRequest);

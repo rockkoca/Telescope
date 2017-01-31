@@ -1,7 +1,7 @@
 Package.describe({
   name: 'nova:lib',
   summary: 'Telescope libraries.',
-  version: '0.27.0-nova',
+  version: '1.0.0',
   git: "https://github.com/TelescopeJS/Telescope.git"
 });
 
@@ -13,21 +13,22 @@ Package.onUse(function (api) {
 
     // Meteor packages
 
-    'meteor-base@1.0.4',
+    'meteor-base',
     'mongo',
     'tracker',
     'service-configuration',
-    'standard-minifiers@1.0.6',
-    'modules@0.5.2',
+    'standard-minifiers',
+    'modules',
     'accounts-base',
     'check',
     'http',
     'email',
     'tracker',
-    'ecmascript@0.4.2',
-    'react-meteor-data@0.2.8',
+    'ecmascript',
+    // 'react-meteor-data@0.2.8',
     'service-configuration',
     'shell-server',
+    //'apollo@0.1.2',
     
     // Third-party packages
 
@@ -35,18 +36,14 @@ Package.onUse(function (api) {
     'aldeed:collection2@2.10.0',
     'meteorhacks:picker@1.0.3',
     'dburles:collection-helpers@1.0.4',
-    'matb33:collection-hooks@0.8.1',
     'percolatestudio:synced-cron@1.1.0',
     'jparker:gravatar@0.4.1',
-    'tmeasday:publish-counts@0.7.3',
-    'meteorhacks:unblock@1.1.0',
     // 'kadira:flow-router-ssr@3.13.0',
-    "reactrouter:react-router-ssr@3.1.3",
+    "reactrouter:react-router-ssr@3.1.6-patch",
     // 'kadira:flow-router@2.12.1',
-    'utilities:smart-publications@0.1.4',
-    'utilities:smart-methods@0.1.4',
+    // 'utilities:smart-methods@0.1.4',
     'meteorhacks:inject-initial@1.0.4',
-    'peerlibrary:reactive-publish@0.2.0'
+    // 'peerlibrary:reactive-publish@0.2.0'
   ];
 
   api.use(packages);

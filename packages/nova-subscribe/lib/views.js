@@ -1,12 +1,14 @@
+import Users from 'meteor/nova:users';
+
 if (typeof Package['nova:posts'] !== "undefined") {
   import Posts from "meteor/nova:posts";
 
   Posts.views.add("userSubscribedPosts", function (terms) {
-    var user = Meteor.users.findOne(terms.userId),
+    var user = Users.findOne(terms.userId),
         postsIds = [];
 
-    if (user && user.telescope.subscribedItems && user.telescope.subscribedItems.Posts) {
-      postsIds = _.pluck(user.telescope.subscribedItems.Posts, "itemId");
+    if (user && user.subscribedItems && user.subscribedItems.Posts) {
+      postsIds = _.pluck(user.subscribedItems.Posts, "itemId");
     }
 
     return {

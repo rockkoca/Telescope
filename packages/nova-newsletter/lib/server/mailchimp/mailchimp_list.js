@@ -1,13 +1,13 @@
-import Telescope from 'meteor/nova:lib';
 import Users from 'meteor/nova:users';
 import MailChimp from './mailchimp_api.js';
+import { getSetting } from 'meteor/nova:core';
 
 const MailChimpList = {};
 
 MailChimpList.add = function(userOrEmail, confirm, done){
 
-  var apiKey = Telescope.settings.get('mailChimpAPIKey');
-  var listId = Telescope.settings.get('mailChimpListId');
+  var apiKey = getSetting('mailChimpAPIKey');
+  var listId = getSetting('mailChimpListId');
 
   var user, email;
 
@@ -30,7 +30,7 @@ MailChimpList.add = function(userOrEmail, confirm, done){
 
     try {
 
-      console.log('// Adding "'+email+'" to MailChimp list…');
+      console.log('// Adding "'+email+'" to MailChimp list…'); // eslint-disable-line
 
       var api = new MailChimp(apiKey);
       var subscribeOptions = {
@@ -44,24 +44,37 @@ MailChimpList.add = function(userOrEmail, confirm, done){
 
       // mark user as subscribed
       if (!!user) {
-        Users.methods.setSetting(user._id, 'newsletter_subscribeToNewsletter', true);
+        Users.setSetting(user, 'newsletter_subscribeToNewsletter', true);
       }
 
-      console.log("// User subscribed");
+      console.log("// User subscribed"); // eslint-disable-line
 
-      return subscribe;
+      return {actionResult: 'subscribed', ...subscribe};
 
     } catch (error) {
+      // if the email is already in the Mailchimp list, no need to throw an error
+      if (error.error === 214) {
+        console.log('// Email already present in the list!');
+        
+        // if this is a user subscribing, update the relevant setting
+        if (user) {
+          Users.setSetting(user, 'newsletter_subscribeToNewsletter', true);
+          console.log('// User setting updated');
+        }
+        
+        return {actionResult: 'subscribed'};
+      }
+      
       throw new Meteor.Error("subscription-failed", error.message);
     }
   } else {
-    throw new Meteor.Error("Please provide your MailChimp API key and list ID", error.message);
+    throw new Meteor.Error("Please provide your MailChimp API key and list ID");
   }
 };
 
 MailChimpList.remove = (user) => {
-  const apiKey = Telescope.settings.get('mailChimpAPIKey');
-  const listId = Telescope.settings.get('mailChimpListId');
+  const apiKey = getSetting('mailChimpAPIKey');
+  const listId = getSetting('mailChimpListId');
 
   const email = Users.getEmail(user);
   if (!email) {
@@ -74,7 +87,7 @@ MailChimpList.remove = (user) => {
 
     try {
 
-      console.log('// Removing "'+email+'" to MailChimp list…');
+      console.log('// Removing "'+email+'" from MailChimp list…'); // eslint-disable-line
 
       var api = new MailChimp(apiKey);
       var subscribeOptions = {
@@ -87,17 +100,17 @@ MailChimpList.remove = (user) => {
       var subscribe = api.call('lists', 'unsubscribe', subscribeOptions);
 
       // mark user as unsubscribed
-      Users.methods.setSetting(user._id, 'newsletter_subscribeToNewsletter', false);
+      Users.setSetting(user, 'newsletter_subscribeToNewsletter', false);
 
-      console.log("// User unsubscribed");
+      console.log("// User unsubscribed"); // eslint-disable-line
 
-      return subscribe;
+      return {actionResult: 'unsubscribed', ...subscribe};
 
     } catch (error) {
       throw new Meteor.Error("unsubscription-failed", error.message);
     }
   } else {
-    throw new Meteor.Error("Please provide your MailChimp API key and list ID", error.message);
+    throw new Meteor.Error("Please provide your MailChimp API key and list ID");
   }
 };
 

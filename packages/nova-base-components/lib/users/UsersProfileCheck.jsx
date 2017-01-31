@@ -1,18 +1,17 @@
-import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Modal } from 'react-bootstrap';
-import NovaForm from "meteor/nova:forms";
 import { withRouter } from 'react-router'
 import Users from 'meteor/nova:users';
+import { withCurrentUser, Utils, Components, registerComponent } from 'meteor/nova:core';
 
-const UsersProfileCheckModal = ({currentUser, show, router}) => {
+const UsersProfileCheckModal = ({show, router, currentUser}, context) => {
 
   // return fields that are required by the schema but haven't been filled out yet
-  const schema = Users.simpleSchema()._schema;
-  const requiredFields = _.filter(_.keys(schema), function (fieldName) {
+  const schema = Utils.stripTelescopeNamespace(Users.simpleSchema()._schema);
+  const requiredFields = _.filter(_.keys(schema), (fieldName) => {
     var field = schema[fieldName];
-    return !!field.required && !Telescope.getNestedProperty(Meteor.user(), fieldName);
+    return !!field.required && !Utils.getNestedProperty(currentUser, fieldName);
   });
 
   return (
@@ -21,34 +20,29 @@ const UsersProfileCheckModal = ({currentUser, show, router}) => {
         <Modal.Title><FormattedMessage id="users.complete_profile"/></Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <NovaForm
-          currentUser={ currentUser }
-          collection={ Meteor.users }
-          document={ currentUser }
-          methodName="users.edit"
-          successCallback={ (user) => Telescope.callbacks.runAsync("profileCompletedAsync", user) }
+        <Components.SmartForm
+          collection={ Users }
+          documentId={ currentUser._id }
           fields={ requiredFields }
         />
       </Modal.Body>
       <Modal.Footer>
-        <FormattedMessage id="app.or"/> <a className="complete-profile-logout" onClick={ () => Meteor.logout(() => router.push({pathname: '/'})) }><FormattedMessage id="users.log_out"/></a>
+        <FormattedMessage id="app.or"/> <a className="complete-profile-logout" onClick={ () => Meteor.logout(() => window.location.reload() /* something is broken here when giving the apollo client as a prop*/) }><FormattedMessage id="users.log_out"/></a>
       </Modal.Footer>
     </Modal>
   )
 };
 
-class UsersProfileCheck extends Component {
-  render() {
-    const currentUser = this.context.currentUser;
-    return currentUser ? <UsersProfileCheckModal currentUser={currentUser} show={!Users.hasCompletedProfile(currentUser)}/> : null
-  }
-}
+const UsersProfileCheck = ({currentUser}, context) => {
+  // console.log('current user', currentUser);
+  // console.log('profile completed', !Users.hasCompletedProfile(currentUser));
+  return currentUser ? <UsersProfileCheckModal currentUser={currentUser} show={!Users.hasCompletedProfile(currentUser)}/> : null;
+};
 
-UsersProfileCheck.contextTypes = {
+UsersProfileCheck.propsTypes = {
   currentUser: React.PropTypes.object
-}
+};
 
 UsersProfileCheck.displayName = "UsersProfileCheck";
 
-module.exports = withRouter(UsersProfileCheck);
-export default withRouter(UsersProfileCheck);
+registerComponent('UsersProfileCheck', UsersProfileCheck, withCurrentUser, withRouter);

@@ -1,28 +1,25 @@
-import Telescope from 'meteor/nova:lib';
 import Posts from "meteor/nova:posts";
 import Categories from "./collection.js";
-
-Categories.helpers({getCollection: () => Categories});
-Categories.helpers({getCollectionName: () => "categories"});
+import { Utils } from 'meteor/nova:core';
 
 /**
  * @summary Get all of a category's parents
  * @param {Object} category
  */
 Categories.getParents = function (category) {
-  var categoriesArray = [];
+  const categoriesArray = [];
 
-  var getParents = function recurse (category) {
-    var parent;
-    if (parent = Categories.findOne(category.parentId)) {
+  const getParents = function recurse (category) {
+    const parent = Categories.findOne(category.parentId);
+    if (parent) {
       categoriesArray.push(parent);
       recurse(parent);
     }
-  }(category);
+  };
+  getParents(category);
 
   return categoriesArray;
 };
-Categories.helpers({getParents: function () {return Categories.getParents(this);}});
 
 /**
  * @summary Get all of a category's children
@@ -37,12 +34,11 @@ Categories.getChildren = function (category) {
       categoriesArray = categoriesArray.concat(children);
       recurse(children);
     }
-  }([category]);
+  };
+  getChildren([category]);
 
   return categoriesArray;
 };
-Categories.helpers({getChildren: function () {return Categories.getChildren(this);}});
-
 /**
  * @summary Get all of a post's categories
  * @param {Object} post
@@ -50,20 +46,16 @@ Categories.helpers({getChildren: function () {return Categories.getChildren(this
 Posts.getCategories = function (post) {
   return !!post.categories ? Categories.find({_id: {$in: post.categories}}).fetch() : [];
 };
-Posts.helpers({getCategories: function () {return Posts.getCategories(this);}});
-
 /**
  * @summary Get a category's URL
  * @param {Object} category
  */
 Categories.getUrl = function (category, isAbsolute) {
-  var isAbsolute = typeof isAbsolute === "undefined" ? false : isAbsolute; // default to false
-  var prefix = isAbsolute ? Telescope.utils.getSiteUrl().slice(0,-1) : "";
+  isAbsolute = typeof isAbsolute === "undefined" ? false : isAbsolute; // default to false
+  const prefix = isAbsolute ? Utils.getSiteUrl().slice(0,-1) : "";
   // return prefix + FlowRouter.path("postsCategory", category);
   return `${prefix}/?cat=${category.slug}`;
 };
-Categories.helpers({getUrl: function () {return Categories.getUrl(this);}});
-
 /**
  * @summary Get a category's counter name
  * @param {Object} category
@@ -71,4 +63,3 @@ Categories.helpers({getUrl: function () {return Categories.getUrl(this);}});
  Categories.getCounterName = function (category) {
   return category._id + "-postsCount";
  }
- Categories.helpers({getCounterName: function () {return Categories.getCounterName(this);}});

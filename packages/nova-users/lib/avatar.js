@@ -1,3 +1,4 @@
+import { Gravatar } from 'meteor/jparker:gravatar';
 import Users from './collection.js';
 
 // var _ = require('underscore');
@@ -20,8 +21,7 @@ Users.avatar = {
     //   'initials' (show the user's initials).
     fallbackType: '',
 
-    // This will replace the included default avatar image's URL
-    // ('packages/utilities_avatar/default.png'). It can be a relative path
+    // Default avatar image's URL. It can be a relative path
     // (relative to website's base URL, e.g. 'images/defaultthis.png').
     defaultImageUrl: 'https://placekitten.com/80/80',
 
@@ -166,13 +166,13 @@ Users.avatar = {
         url = this.getCustomUrl(user);
       }
       else if (svc === 'none') {
-        defaultUrl = this.options.defaultImageUrl || '/packages/utilities_avatar/default.png';
+        defaultUrl = this.options.defaultImageUrl;
         // If it's a relative path (no '//' anywhere), complete the URL
         if (defaultUrl.indexOf('//') === -1) {
-          // Add starting slash if it does not exist
-          if (defaultUrl.charAt(0) !== '/') defaultUrl = '/' + defaultUrl;
+          // remove starting slash if it exists
+          if (defaultUrl.charAt(0) === '/') defaultUrl = defaultUrl.substr(1);
           // Then add the relative path to the server's base URL
-          defaultUrl = [window.location.origin, defaultUrl].join('');
+          defaultUrl = Meteor.absoluteUrl(defaultUrl);
         }
         url = this.getGravatarUrl(user, defaultUrl);
       }
@@ -191,7 +191,7 @@ Users.avatar = {
       return service[0];
   },
 
-  computeUrl: function(prop) {
+  computeUrl: function(prop, user) {
     if (typeof prop === 'function') {
       prop = prop.call(user);
     }
@@ -210,9 +210,9 @@ Users.avatar = {
 
     var customProp = user && this.options.customImageProperty;
     if (typeof customProp === 'function') {
-      return this.computeUrl(customProp);
+      return this.computeUrl(customProp, user);
     } else if (customProp) {
-      return this.computeUrl(this.getDescendantProp(user, customProp));
+      return this.computeUrl(this.getDescendantProp(user, customProp), user);
     }
   },
 
@@ -230,7 +230,7 @@ Users.avatar = {
     }
 
     var emailOrHash = this.getUserEmail(user) || Users.getEmailHash(user);
-    var secure = true;
+    // var secure = true;
     var options = {
       // NOTE: Gravatar's default option requires a publicly accessible URL,
       // so it won't work when your app is running on localhost and you're

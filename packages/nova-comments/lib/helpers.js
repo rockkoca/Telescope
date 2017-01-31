@@ -1,8 +1,7 @@
-import Telescope from 'meteor/nova:lib';
+// import Telescope from 'meteor/nova:lib';
 import Comments from './collection.js';
-
-Comments.helpers({getCollection: () => Comments});
-Comments.helpers({getCollectionName: () => "comments"});
+import Posts from 'meteor/nova:posts';
+import Users from 'meteor/nova:users';
 
 //////////////////
 // Link Helpers //
@@ -16,7 +15,6 @@ Comments.getPageUrl = function(comment, isAbsolute = false){
   const post = Posts.findOne(comment.postId);
   return `${Posts.getPageUrl(post, isAbsolute)}/#${comment._id}`;
 };
-Comments.helpers({getPageUrl: function () {return Comments.getPageUrl(this);}});
 
 ///////////////////
 // Other Helpers //
@@ -27,8 +25,6 @@ Comments.helpers({getPageUrl: function () {return Comments.getPageUrl(this);}});
  * @param {Object} comment
  */
 Comments.getAuthorName = function (comment) {
-  var user = Meteor.users.findOne(comment.userId);
-  return user ? user.getDisplayName() : comment.author;
+  var user = Users.findOne(comment.userId);
+  return user ? Users.getDisplayName(user) : comment.author;
 };
-Comments.helpers({getAuthorName: function () {return Comments.getAuthorName(this);}});
-
