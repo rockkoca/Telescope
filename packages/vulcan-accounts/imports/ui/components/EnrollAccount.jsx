@@ -6,7 +6,7 @@ import { STATES } from '../../helpers.js';
 
 class AccountsEnrollAccount extends PureComponent {
   componentDidMount() {
-    const token = this.props.params.token;
+    const token = this.props.match.params.token;
     Accounts._loginButtonsSession.set('enrollAccountToken', token);
   }
 
@@ -29,7 +29,7 @@ class AccountsEnrollAccount extends PureComponent {
 
 AccountsEnrollAccount.contextTypes = {
   intl: intlShape
-}
+};
 
 AccountsEnrollAccount.propsTypes = {
   currentUser: PropTypes.object,

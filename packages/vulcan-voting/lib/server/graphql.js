@@ -5,7 +5,7 @@ import { VoteableCollections } from '../modules/make_voteable.js';
 function CreateVoteableUnionType() {
   const voteableSchema = VoteableCollections.length ? `union Voteable = ${VoteableCollections.map(collection => collection.typeName).join(' | ')}` : '';
   addGraphQLSchema(voteableSchema);
-  return {}
+  return {};
 }
 addCallback('graphql.init.before', CreateVoteableUnionType);
 
@@ -28,7 +28,7 @@ const voteResolver = {
       const { currentUser } = context;
       const collection = context[collectionName];
 
-      const document = performVoteServer({documentId, voteType, collection, voteId, user: currentUser});
+      const document = await performVoteServer({documentId, voteType, collection, voteId, user: currentUser});
       return document;
 
     },

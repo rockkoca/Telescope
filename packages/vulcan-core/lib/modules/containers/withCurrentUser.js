@@ -17,14 +17,15 @@ const withCurrentUser = component => {
       alias: 'withCurrentUser',
       
       props(props) {
-        const {data: {loading, currentUser}} = props;
+        const { data } = props;
         return {
-          currentUserLoading: loading,
-          currentUser,
+          currentUserLoading: data.loading,
+          currentUser: data.currentUser,
+          currentUserData: data,
         };
       },
     }
   )(component);
-}
+};
 
 export default withCurrentUser;

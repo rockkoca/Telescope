@@ -1,4 +1,4 @@
-import Users from '../collection.js';
+import Users from '../modules/index.js';
 import { newMutation } from 'meteor/vulcan:lib'; // import from vulcan:lib because vulcan:core isn't loaded yet
 
 const createUser = user => {
@@ -15,6 +15,6 @@ const createUser = user => {
     document: user,
     validate: false
   });
-}
+};
 
 export default createUser;

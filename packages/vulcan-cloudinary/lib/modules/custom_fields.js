@@ -10,7 +10,7 @@ export const addCustomFields = collection => {
       fieldSchema: {
         type: String,
         optional: true,
-        viewableBy: ['guests'],
+        canRead: ['guests'],
       }
     },
     {
@@ -18,7 +18,7 @@ export const addCustomFields = collection => {
       fieldSchema: {
         type: Array,
         optional: true,
-        viewableBy: ['guests'],
+        canRead: ['guests'],
       }
     },
     {
@@ -36,12 +36,12 @@ export const addCustomFields = collection => {
       fieldSchema: {
         type: String,
         optional: true,
-        viewableBy: ['guests'],
+        canRead: ['guests'],
         resolveAs: {
           type: 'String',
           arguments: 'format: String',
           resolver: (document, {format}, context) => {
-            const image = format ? _.findWhere(document.cloudinaryUrls, {name: format}) : document.cloudinaryUrls[0]
+            const image = format ? _.findWhere(document.cloudinaryUrls, {name: format}) : document.cloudinaryUrls[0];
             return image && image.url;
           }
         },
@@ -50,4 +50,4 @@ export const addCustomFields = collection => {
 
   ]);
   
-}
+};

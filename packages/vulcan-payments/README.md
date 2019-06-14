@@ -32,7 +32,8 @@ As well as the following private setting (can be stored in the setting's root or
     }
   },
   "stripe": {
-    "secretKey": "sk_test_sfdhj34jdsfxhjs234sd0K"
+    "secretKey": "sk_test_sfdhj34jdsfxhjs234sd0K",
+    "createPlans": false
   },
 }
 ```
@@ -91,7 +92,7 @@ Make sure you define your products in a location accessible to both client and s
     associatedCollection={Jobs}
     associatedId={job._id}
     callback={setToPaid}
-    button={<Button className="buy-job-button" bsStyle="primary">Complete Payment</Button>}
+    button={<Button className="buy-job-button" variant="primary">Complete Payment</Button>}
   />
 ```
 

@@ -3,10 +3,9 @@
 // newsletter scheduling with MailChimp
 
 import moment from 'moment';
-import { getSetting, registerSetting } from 'meteor/vulcan:core';
+import { getSetting, registerSetting, throwError } from 'meteor/vulcan:core';
 import Newsletters from '../../modules/collection.js';
 import MailChimpNPM from 'mailchimp';
-import { createError } from 'apollo-errors';
 
 registerSetting('mailchimp', null, 'MailChimp settings');
 
@@ -49,18 +48,17 @@ if (settings) {
         const subscribe = callSyncAPI('lists', 'subscribe', subscribeOptions);
         return {result: 'subscribed', ...subscribe};
       } catch (error) {
-        console.log(error)
-        let name, message;
+        console.log(error);
+        let name;
+        const message = error.message;
         if (error.code == 214) {
           name = 'has_unsubscribed';
         } else if (error.code == 214) {
           name = 'already_subscribed';
         } else {
           name = 'subscription_failed';
-          message = error.message;
         }
-        const NewsletterError = createError(name, { message });
-        throw new NewsletterError();
+        throwError({ id: name, message, data: {path: 'newsletter_subscribeToNewsletter', message}});
       }
     },
 
@@ -77,7 +75,7 @@ if (settings) {
         const subscribe = callSyncAPI('lists', 'unsubscribe', subscribeOptions);
         return {result: 'unsubscribed', ...subscribe};
       } catch (error) {
-        throw new Error("unsubscribe-failed", error.message);
+        throw new Error('unsubscribe-failed', error.message);
       }
     },
 
@@ -106,7 +104,7 @@ if (settings) {
         // console.log(campaign)
 
         const scheduledMoment = moment().utcOffset(0).add(1, 'hours');
-        const scheduledTime = scheduledMoment.format("YYYY-MM-DD HH:mm:ss");
+        const scheduledTime = scheduledMoment.format('YYYY-MM-DD HH:mm:ss');
 
         const scheduleOptions = {
           cid: mailchimpNewsletter.id,
@@ -126,6 +124,6 @@ if (settings) {
       }
     }
 
-  }
+  };
 
 }

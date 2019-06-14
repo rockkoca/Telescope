@@ -1,4 +1,5 @@
 import { getSetting, registerSetting } from 'meteor/vulcan:core';
+import { HTTP } from 'meteor/http';
 import { Embed } from '../../modules/embed.js';
 
 registerSetting('embedly', null, 'Embedly settings');
@@ -25,7 +26,7 @@ if (settings) {
 
       try {
 
-        const data = Meteor.http.get(extractBase, {
+        const data = HTTP.get(extractBase, {
           params: {
             key: apiKey,
             url: url,
@@ -37,7 +38,7 @@ if (settings) {
 
 
         if (data.images && data.images.length > 0) // there may not always be an image
-          data.thumbnailUrl = data.images[0].url.replace("http:","") // add thumbnailUrl as its own property
+          data.thumbnailUrl = data.images[0].url.replace('http:',''); // add thumbnailUrl as its own property
 
         if (data.authors && data.authors.length > 0) {
           data.sourceName = data.authors[0].name;
@@ -59,7 +60,7 @@ if (settings) {
       }
     },
 
-  }
+  };
 
 }
 

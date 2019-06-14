@@ -16,7 +16,15 @@ export const addTrackFunction = f => {
 
 export const track = async (eventName, eventProperties, currentUser) => {
   for (let f of trackFunctions) {
-    await f(eventName, eventProperties, currentUser);
+    try {
+      // eslint-disable-next-line no-await-in-loop
+      await f(eventName, eventProperties, currentUser);
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log(`// ${f.name} track error for event ${eventName}`);
+      // eslint-disable-next-line no-console
+      console.log(error);
+    }
   }
 };
 
@@ -29,7 +37,7 @@ export const addIdentifyFunction = f => {
 };
 
 export const addPageFunction = f => {
-  const f2 = (empty, route) => f(route);
+  const f2 = ({ currentRoute }) => f(currentRoute);
 
   // rename f2 to same name as f
   // see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty
@@ -37,5 +45,5 @@ export const addPageFunction = f => {
   descriptor.value = f.name;
   Object.defineProperty(f2, 'name', descriptor);
 
-  addCallback('router.onUpdate', f2);
+  addCallback('router.onUpdate.async', f2);
 };

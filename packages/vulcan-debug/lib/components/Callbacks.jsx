@@ -3,7 +3,7 @@ import { registerComponent, Components } from 'meteor/vulcan:lib';
 import Callbacks from '../modules/callbacks/collection.js';
 
 const CallbacksName = ({ document }) => 
-  <strong>{document.name}</strong>
+  <strong>{document.name}</strong>;
 
 const CallbacksDashboard = props => 
   <div className="settings">
@@ -16,14 +16,14 @@ const CallbacksDashboard = props =>
       }}
       columns={[
         { name: 'name', component: CallbacksName }, 
-        'arguments', 
-        'returns', 
+        'iterator', 
+        'properties', 
         'runs', 
         'description',
         'hooks',
       ]}
     />
-  </div>
+  </div>;
 
 registerComponent('Callbacks', CallbacksDashboard);
 

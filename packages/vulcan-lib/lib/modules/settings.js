@@ -2,7 +2,7 @@ import Vulcan from './config.js';
 import flatten from 'flat';
 
 const getNestedProperty = function (obj, desc) {
-  var arr = desc.split(".");
+  var arr = desc.split('.');
   while(arr.length && (obj = obj[arr.shift()]));
   return obj;
 };
@@ -42,7 +42,7 @@ export const getAllSettings = () => {
     }
     
     if (typeof publicSettings[key] !== 'undefined'){
-      settingsObject[key].public = true;
+      settingsObject[key].isPublic = true;
     }
 
     if (registeredSettings[key]) {
@@ -53,16 +53,16 @@ export const getAllSettings = () => {
   });
 
   return _.map(settingsObject, (setting, key) => ({name: key, ...setting}));
-}
+};
 
 
 Vulcan.showSettings = () => {
   return getAllSettings();
-}
+};
 
-export const registerSetting = (settingName, defaultValue, description) => {
-  Settings[settingName] = { defaultValue, description };
-}
+export const registerSetting = (settingName, defaultValue, description, isPublic) => {
+  Settings[settingName] = { defaultValue, description, isPublic };
+};
 
 export const getSetting = (settingName, settingDefault) => {
 
@@ -84,7 +84,7 @@ export const getSetting = (settingName, settingDefault) => {
         ...rootSetting,
         ...privateSetting,
         ...publicSetting,
-      }
+      };
     } else {
       if (typeof rootSetting !== 'undefined') {
         setting = rootSetting;
@@ -100,13 +100,13 @@ export const getSetting = (settingName, settingDefault) => {
   } else {
     // look only in public
     const publicSetting = Meteor.settings.public && getNestedProperty(Meteor.settings.public, settingName);
-    setting = publicSetting || defaultValue;
+    setting = typeof publicSetting !== 'undefined' ? publicSetting : defaultValue;
   }
 
   // Settings[settingName] = {...Settings[settingName], settingValue: setting};
 
   return setting;
 
-}
+};
 
 registerSetting('debug', false, 'Enable debug mode (more verbose logging)');

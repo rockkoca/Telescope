@@ -37,7 +37,7 @@ export const registerFragment = fragmentTextSource => {
   // register fragment
   Fragments[fragmentName] = {
     fragmentText
-  }
+  };
 
   // also add subfragments if there are any
   if(subFragments && subFragments.length) {
@@ -65,7 +65,7 @@ export const getFragmentObject = (fragmentText, subFragments) => {
   })] : [literals];
 
   return gql.apply(null, gqlArguments);
-}
+};
 
 /*
 
@@ -84,14 +84,15 @@ export const getDefaultFragmentText = (collection, options = { onlyViewable: tru
 
     */
     const field = schema[fieldName];
-    return (field.resolveAs && !field.resolveAs.addOriginalField) || fieldName.indexOf('$') !== -1 || options.onlyViewable && !field.viewableBy
+    // OpenCRUD backwards compatibility
+    return (field.resolveAs && !field.resolveAs.addOriginalField) || fieldName.includes('$') || fieldName.includes('.') || options.onlyViewable && !(field.canRead || field.viewableBy);
   });
 
   if (fieldNames.length) {
     const fragmentText = `
       fragment ${collection.options.collectionName}DefaultFragment on ${collection.typeName} {
         ${fieldNames.map(fieldName => {
-          return fieldName+'\n'
+          return fieldName+'\n';
         }).join('')}
       }
     `;
@@ -101,11 +102,11 @@ export const getDefaultFragmentText = (collection, options = { onlyViewable: tru
     return null;
   }
 
-}
+};
 export const getDefaultFragment = collection => {
   const fragmentText = getDefaultFragmentText(collection);
   return fragmentText ? gql`${fragmentText}` : null;
-}
+};
 /*
 
 Queue a fragment to be extended with additional properties.
@@ -115,7 +116,7 @@ Note: can be used even before the fragment has been registered.
 */
 export const extendFragment = (fragmentName, newProperties) => {
   FragmentsExtensions[fragmentName] = FragmentsExtensions[fragmentName] ? [...FragmentsExtensions[fragmentName], newProperties] : [newProperties];
-}
+};
 
 /*
 
@@ -134,7 +135,7 @@ export const extendFragmentWithProperties = (fragmentName, newProperties) => {
     fragment.fragmentText.slice(fragmentEndPosition)
   ].join('');
   registerFragment(newFragmentText);
-}
+};
 
 /*
 
@@ -147,7 +148,7 @@ export const removeFromFragment = (fragmentName, propertyName) => {
   const fragment = Fragments[fragmentName];
   const newFragmentText = fragment.fragmentText.replace(propertyName, '');
   registerFragment(newFragmentText);  
-}
+};
 
 /*
 
@@ -166,11 +167,11 @@ export const getFragment = fragmentName => {
     throw new Error(`Fragment "${fragmentName}" not registered.`);
   }
   if (!Fragments[fragmentName].fragmentObject) {
-    throw new Error(`Fragment "${fragmentName}" registered, but not initialized.`)
+    initializeFragments([fragmentName]);
   }
   // return fragment object created by gql
   return Fragments[fragmentName].fragmentObject;  
-}
+};
 
 /*
 
@@ -179,18 +180,26 @@ Get gql fragment text
 */
 export const getFragmentText = fragmentName => {
   if (!Fragments[fragmentName]) {
-    throw new Error(`Fragment "${fragmentName}" not registered.`)
+    throw new Error(`Fragment "${fragmentName}" not registered.`);
   }
   // return fragment object created by gql
   return Fragments[fragmentName].fragmentText;  
-}
+};
+
+/*
+
+Get names of non initialized fragments.
+
+*/
+export const getNonInitializedFragmentNames = () =>
+  _.keys(Fragments).filter(name => !Fragments[name].fragmentObject);
 
 /*
 
 Perform all fragment extensions (called from routing)
 
 */
-export const initializeFragments = () => {
+export const initializeFragments = (fragments = getNonInitializedFragmentNames()) => {
 
   const errorFragmentKeys = [];
 
@@ -206,10 +215,10 @@ export const initializeFragments = () => {
   // create fragment objects
 
   // initialize fragments *with no subfragments* first to avoid unresolved dependencies
-  const keysWithoutSubFragments = _.filter(_.keys(Fragments), fragmentName => !Fragments[fragmentName].subFragments);
+  const keysWithoutSubFragments = _.filter(fragments, fragmentName => !Fragments[fragmentName].subFragments);
   _.forEach(keysWithoutSubFragments, fragmentName => {
     const fragment = Fragments[fragmentName];
-    fragment.fragmentObject = getFragmentObject(fragment.fragmentText, fragment.subFragments)
+    fragment.fragmentObject = getFragmentObject(fragment.fragmentText, fragment.subFragments);
   });
 
   // next, initialize fragments that *have* subfragments
@@ -231,4 +240,4 @@ export const initializeFragments = () => {
     fragment.fragmentObject = getFragmentObject(fragment.fragmentText, fragment.subFragments);
   });
 
-}
+};

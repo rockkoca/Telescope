@@ -84,10 +84,10 @@ Posts.addField({
   fieldSchema: {
     type: String,
     optional: true,
-    control: getComponent('Upload'),
-    insertableBy: ['members'],
-    editableBy: ['members'],
-    viewableBy: ['guests'],
+    input: getComponent('Upload'),
+    canCreate: ['members'],
+    canUpdate: ['members'],
+    canRead: ['guests'],
     form: {
       options: {
         preset: getSetting('cloudinaryPresets').posts // this setting refers to the transformation you want to apply to the image
@@ -110,10 +110,10 @@ Users.addField({
   fieldSchema: {
     type: String,
     optional: true,
-    control: getComponent('Upload'),
-    insertableBy: ['members'],
-    editableBy: ['members'],
-    viewableBy: ['guests'],
+    input: getComponent('Upload'),
+    canCreate: ['members'],
+    canUpdate: ['members'],
+    canRead: ['guests'],
     preload: true, // ⚠️ will preload the field for the current user!
     form: {
       options: {

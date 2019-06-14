@@ -3,7 +3,7 @@ import { registerComponent, Components } from 'meteor/vulcan:lib';
 import Settings from '../modules/settings/collection.js';
 
 const SettingName = ({ document }) => 
-  <strong>{document.name}</strong>
+  <strong>{document.name}</strong>;
 
 const SettingsDashboard = props => 
   <div className="settings">
@@ -15,11 +15,12 @@ const SettingsDashboard = props =>
         { name: 'name', component: SettingName }, 
         'value', 
         'defaultValue', 
-        'public', 
-        'description'
+        'isPublic', 
+        'description',
+        'serverOnly'
       ]}
     />
-  </div>
+  </div>;
 
 registerComponent('Settings', SettingsDashboard);
 

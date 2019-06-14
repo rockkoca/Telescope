@@ -14,14 +14,15 @@ const Events = createCollection({
 
   mutations: getDefaultMutations('AnalyticsEvents', {
     newCheck: () => true,
-    editCheck: () => false,
-    removeCheck: () => false
+    update: false,
+    upsert: false,
+    delete: false,
   })
 
 });
 
 Events.checkAccess = (currentUser, doc) => {
   return Users.isAdmin(currentUser);
-}
+};
 
 export default Events;
